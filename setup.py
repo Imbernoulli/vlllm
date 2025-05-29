@@ -1,4 +1,3 @@
-# vllm_generator_package/setup.py
 import os
 from setuptools import setup, find_packages
 
@@ -11,7 +10,7 @@ if os.path.exists(readme_path):
 
 setup(
     name='vlllm', # Changed name slightly to be more unique
-    version='0.1.0', # Incremented version
+    version='0.2.0', # Incremented version
     author='Bohan Lyu', # Or your name
     author_email='lyubh22@gmail.com', # Or your email
     description='A utility package for text generation using vLLM with multiprocessing support.',

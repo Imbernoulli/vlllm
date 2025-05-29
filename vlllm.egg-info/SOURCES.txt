@@ -1,7 +1,8 @@
+LICENSE
 README.md
 setup.py
-vlite/__init__.py
-vlite/vllm_generator.py
+vlllm/__init__.py
+vlllm/vllm_generator.py
 vlllm.egg-info/PKG-INFO
 vlllm.egg-info/SOURCES.txt
 vlllm.egg-info/dependency_links.txt

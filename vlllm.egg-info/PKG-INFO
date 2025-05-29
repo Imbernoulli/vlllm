@@ -1,8 +1,8 @@
 Metadata-Version: 2.4
 Name: vlllm
-Version: 0.1.0
+Version: 0.2.0
 Summary: A utility package for text generation using vLLM with multiprocessing support.
-Home-page: https://github.com/yourusername/vllm_generator_pkg
+Home-page: https://github.com/Imbernoulli/vlllm
 Author: Bohan Lyu
 Author-email: lyubh22@gmail.com
 Classifier: Programming Language :: Python :: 3
@@ -17,14 +17,134 @@ Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
+License-File: LICENSE
 Requires-Dist: vllm
 Requires-Dist: transformers
 Requires-Dist: torch
 Dynamic: author
 Dynamic: author-email
 Dynamic: classifier
+Dynamic: description
 Dynamic: description-content-type
 Dynamic: home-page
+Dynamic: license-file
 Dynamic: requires-dist
 Dynamic: requires-python
 Dynamic: summary
+
+# vlllm
+
+A utility package for efficient text generation using vLLM with multiprocessing support. This package provides a streamlined interface for running text generation tasks across multiple GPUs and workers, with support for tensor parallelism and pipeline parallelism.
+
+## Features
+
+- Multi-GPU support with configurable tensor parallelism and pipeline parallelism
+- Flexible input handling for both single strings and chat-style message arrays
+- Customizable GPU assignments per worker
+- Automatic data chunking and distribution across workers
+- Support for multiple samples per prompt
+- Robust error handling and recovery
+- Memory-efficient processing of large datasets
+- Compatible with various model formats and configurations
+
+## Installation
+
+```bash
+pip install vlllm
+```
+
+## Quick Start
+
+```python
+from vlllm import generate
+
+# Example data
+data = [
+    {"prompt": "Write a story about a dragon"},
+    {"prompt": "Explain quantum computing"}
+] * 1000
+
+# Basic usage
+results = generate(
+    model_id="meta-llama/Llama-2-7b-chat-hf",
+    data=data,
+    worker_num=2,  # Number of worker processes
+    tp=1,          # Tensor parallel size per worker
+)
+```
+
+## Parameters
+
+- `model_id`: Model identifier or path
+- `data`: List of dictionaries containing prompts/messages
+- `system`: Optional global system prompt
+- `message_key`: Key in data items containing the prompt/messages (default: "prompt")
+- `tp`: Tensor parallel size per worker (default: 1)
+- `pp`: Pipeline parallel size (default: 1)
+- `n`: Number of generations per prompt (default: 1)
+- `worker_num`: Number of worker processes (default: 1)
+- `temperature`: Sampling temperature (default: 0.7)
+- `use_sample`: Use vLLM's sample_n feature (default: False)
+- `result_key`: Key for storing results in output (default: "results")
+- `max_model_len`: Maximum model sequence length (default: 4096)
+- `max_output_len`: Maximum output length (default: 1024)
+- `chunk_size`: Optional size for data chunking
+- `gpu_assignments`: Optional specific GPU assignments per worker
+- `trust_remote_code`: Whether to trust remote code (default: True)
+- `gpu_memory_utilization`: GPU memory utilization target (default: 0.90)
+- `dtype`: Model dtype (default: "auto")
+
+## Advanced Usage
+
+### Chat Format Support
+
+```python
+data = [
+    {
+        "messages": [
+            {"role": "user", "content": "What is the capital of France?"}
+        ]
+    }
+] * 1000
+
+results = generate(
+    model_id="meta-llama/Llama-2-7b-chat-hf",
+    data=data,
+    message_key="messages",  # Specify the key containing messages
+    system="You are a helpful assistant.",  # Global system prompt
+    n=3,  # Generate 3 samples per prompt
+    temperature=0.7,
+    worker_num=2,
+    tp=2  # Use 2 GPUs per worker for tensor parallelism
+)
+```
+
+### Custom GPU Assignments
+
+```python
+results = generate(
+    model_id="meta-llama/Llama-2-7b-chat-hf",
+    data=data,
+    worker_num=2,
+    gpu_assignments=[[0,1], [2,3]],  # Assign specific GPUs to each worker
+    chunk_size=100  # Process data in chunks of 100 items
+)
+```
+
+## Important Notes
+
+1. When using pipeline parallelism (pp > 1), worker_num must be 1
+2. GPU assignments must match the worker count if specified
+3. The package uses spawn method for multiprocessing on POSIX systems
+4. Error handling includes automatic recovery and result completion
+
+## Requirements
+
+- vllm
+- transformers
+- torch
+- Python >= 3.8
+
+## License
+
+Apache-2.0 License
