@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: vlllm
-Version: 0.2.1
+Version: 0.2.2
 Summary: A utility package for text generation using vLLM with multiprocessing support.
 Home-page: https://github.com/Imbernoulli/vlllm
 Author: Bohan Lyu

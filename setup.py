@@ -10,7 +10,7 @@ if os.path.exists(readme_path):
 
 setup(
     name='vlllm', # Changed name slightly to be more unique
-    version='0.2.1', # Incremented version
+    version='0.2.2', # Incremented version
     author='Bohan Lyu', # Or your name
     author_email='lyubh22@gmail.com', # Or your email
     description='A utility package for text generation using vLLM with multiprocessing support.',

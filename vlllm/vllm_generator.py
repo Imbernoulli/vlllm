@@ -173,7 +173,6 @@ def _generation_worker(
           f"LLM will be initialized with tensor_parallel_size: {tp_size_val}")
     
     processed_items_in_worker = 0
-    vllm_engine = None 
 
     tokenizer = AutoTokenizer.from_pretrained(model_id_str, trust_remote_code=trust_remote_code_val)
     if tokenizer.pad_token is None and tokenizer.eos_token is not None:
@@ -192,7 +191,8 @@ def _generation_worker(
         llm_args["distributed_executor_backend"] = "ray"
     else:
         llm_args["gpu_memory_utilization"] = gpu_memory_utilization_val
-        vllm_engine = LLM(**llm_args)
+    
+    vllm_engine = LLM(**llm_args)
 
     sampling_params_n_for_vllm = n_samples_val if use_vllm_sample_n_val else 1
     sampling_params = SamplingParams(
