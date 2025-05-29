@@ -17,7 +17,7 @@ setup(
     description='A utility package for text generation using vLLM with multiprocessing support.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/yourusername/vllm_generator_pkg', # Replace with your actual URL
+    url='https://github.com/Imbernoulli/vlllm', # Replace with your actual URL
     packages=find_packages(where="."), # Correctly find the package
     install_requires=[
         'vllm',    # Specify a version range for vllm
